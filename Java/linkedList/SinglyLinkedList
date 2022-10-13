@@ -1,0 +1,136 @@
+
+class LInkedList {
+    Node head;
+    protected int size;
+    LInkedList() {
+        size = 0;
+    }
+    class Node {
+        String data;
+        Node next;
+        Node(String data) {
+            this.data = data;
+            this.next = null;
+            size++;
+        }
+    }
+    public int getSize() {
+        return size;
+    }
+    public void addatfirst(String data) {
+        Node newNode = new Node(data);
+
+        newNode.next = head;
+        head = newNode;
+    }
+    public void addLast(String data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node lastNode = head;
+        while (lastNode.next != null) {
+            lastNode = lastNode.next;
+        }
+        lastNode.next = newNode;
+    }
+    public void print() {
+        Node CurrentNode = head;
+        while (CurrentNode != null) {
+            System.out.print(CurrentNode.data + " -- ");
+            CurrentNode = CurrentNode.next;
+        }
+        System.out.println("null");
+    }
+    public void removeFirst() {
+        if (head == null) {
+            System.out.println("Empty List, nothing to delete");
+            return;
+        }
+        head = head.next;
+        size--;
+    }
+    public void removeLast() {
+        if (head == null) {
+            System.out.println("Empty List, nothing to delete");
+            return;
+        }
+        size--;
+        if (head.next == null) {
+            head = null;
+            return;
+        }
+        Node currNode = head;
+        Node lastNode = head.next;
+        while (lastNode.next != null) {
+            currNode = currNode.next;
+            lastNode = lastNode.next;
+        }
+        currNode.next = null;
+
+    }
+    public void addInMiddle(int index, String data) {
+        if (index > size || index < 0) {
+            System.out.println("Invalid Index value");
+            return;
+        }
+        size++;
+        Node newNode = new Node(data);
+        if (head == null || index == 0) {
+            newNode.next = head;
+            head = newNode;
+            return;
+        }
+        Node presentNode = head;
+        for (int i = 1; i < size; i++) {
+            if (i == index) {
+                Node nextNode = presentNode.next;
+                presentNode.next = newNode;
+                newNode.next = nextNode;
+                break;
+            }
+            presentNode = presentNode.next;
+        }
+    }
+    public void reverseList() { //time complexity
+        //o(n)//space complexity o(1).
+        if(head == null || head.next == null) {
+            return;
+        }
+        Node preNode = head;
+        Node currNode = head.next;
+        while(currNode != null) {
+            Node nextNode = currNode.next;
+            currNode.next = preNode;
+            preNode = currNode;
+            currNode = nextNode;
+        }
+        head.next = null;
+        head = preNode;
+    }
+    public Node reverseListRecursive(Node head) { //time complexity
+        //O(n) //space complexity O(1)
+//empty node || last node or only one node
+        if(head == null || head.next == null) {
+            return head;
+        }
+        Node newHead = reverseListRecursive(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+    public static void main(String[] args) {
+        LInkedList a = new LInkedList();
+        a.addatfirst("day");
+        a.addatfirst("234");
+        a.addLast("asd");
+        a.addInMiddle(2,"intellij");
+        a.removeFirst();
+        a.removeLast();
+        //a.reverseList();
+        System.out.println("size is "+a.getSize());
+        a.print();
+    }
+}
+
